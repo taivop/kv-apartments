@@ -24,3 +24,8 @@ form p {
 input.narrow_numeric {
     width: 40px;
 }
+
+div#alert span#message {
+    display: none;
+    color: red;
+}

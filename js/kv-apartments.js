@@ -49,9 +49,16 @@ createGraph = function(rows) {
 }
 
 updateGraph = function(rows) {
+    // If no datapoints, show alert
     if (rows.length <= 0) {
-        console.log("No datapoints.")
+        d3.select("div#alert span#message")
+            .style("display", "block")
+            .text("Kriteeriumidele ei vastanud ükski kuulutus.")
         return;
+    } else {
+        d3.select("div#alert span#message")
+            .style("display", "none")
+            .text("")
     }
 
     x.domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))]);

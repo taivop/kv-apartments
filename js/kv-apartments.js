@@ -13,11 +13,11 @@ createGraph = function(rows) {
         .domain([0, d3.max(data, function(d) { return d.y; })])
         .range([height, 0]);
 
-    var xAxis = d3.svg.axis()
+    xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom");
 
-    var svg = d3.select("body").append("svg")
+    svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -35,6 +35,7 @@ createGraph = function(rows) {
         .attr("height", function(d) { return height - y(d.y); });
 
     bar.append("text")
+        .attr("class", "barlabel")
         .attr("dy", ".75em")
         .attr("y", 6)
         .attr("x", x(data[0].dx) / 2)
@@ -50,6 +51,7 @@ createGraph = function(rows) {
 updateGraph = function(rows) {
 
     x.domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))]);
+    console.log("Max price " + d3.max(rows, function(d) { return d.Hind }))
 
     var data = d3.layout.histogram()
         .bins(x.ticks(20))
@@ -58,27 +60,57 @@ updateGraph = function(rows) {
 
     y.domain([0, d3.max(data, function(d) { return d.y; })])
 
-    var svg = d3.select("body").select("svg")
+    var update_delay = 500;
 
     var bars = svg.selectAll(".bar")
         .data(data)
         .transition()
-        .delay(1500)
+        .delay(update_delay)
         .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
 
     svg.selectAll("rect")
         .data(data)
         .transition()
-        .delay(1500)
+        .delay(update_delay)
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height-y(d.y); });
 
-    svg.selectAll("text")
+    svg.selectAll("text.barlabel")
         .data(data)
         .transition()
-        .delay(1500)
+        .delay(update_delay)
         .attr("x", x(data[0].dx) / 2)
         .text(function(d) { return formatCount(d.y); });
+
+    xAxis.scale(x)
+
+    svg.selectAll("g.x.axis")
+        .transition()
+        .delay(update_delay)
+        .call(xAxis);
+}
+
+getFilteredRows = function(rows) {
+    var s1 = document.getElementById("part_of_city");
+    var part_of_city = s1.options[s1.selectedIndex].value;
+    var s2 = document.getElementById("apartment_state");
+    var apartment_state = s2.options[s2.selectedIndex].value;
+
+    var filtered_rows = rows
+        .filter(function(d) {
+            if(part_of_city == "[Linnaosa]")
+                return true;
+            else
+                return d.Linnaosa==part_of_city;
+        })
+        .filter(function(d) {
+            if(apartment_state == "[Korteri seisukord]")
+                return true;
+            else
+                return d.Seisukord == apartment_state;
+        })
+
+    return filtered_rows;
 }
 
 
@@ -119,14 +151,10 @@ ready = function(error, rows) {
 
     // Update when inputs change
     d3.select("select#part_of_city").on("input", function() {
-        selection = this.value
-        if(selection==="[Linnaosa]")
-            var rows_filtered = rows;
-        else
-            var rows_filtered = rows.filter(function(d) { return d.Linnaosa===selection })
-
-        updateGraph(rows_filtered);
-
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("select#apartment_state").on("input", function() {
+        updateGraph(getFilteredRows(rows));
     });
 }
 

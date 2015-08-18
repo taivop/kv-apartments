@@ -8,10 +8,9 @@ setMeanMedianText = function(mean, median) {
 
 createGraph = function(rows) {
 
-    var x_upper_limit = Math.min(1000000, d3.max(rows, function(d) { return d.Hind }));
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
     var cutoff_index = Math.floor(sorted_by_price.length * 0.99);
-    x_upper_limit = sorted_by_price[cutoff_index].Hind;
+    var x_upper_limit = sorted_by_price[cutoff_index].Hind;
 
     x = d3.scale.linear()
         .domain([0, x_upper_limit])
@@ -99,10 +98,9 @@ updateGraph = function(rows) {
             .text("")
     }
 
-    var x_upper_limit = Math.min(1000000, d3.max(rows, function(d) { return d.Hind }));
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
     var cutoff_index = Math.floor(sorted_by_price.length * 0.99);
-    x_upper_limit = sorted_by_price[cutoff_index].Hind;
+    var x_upper_limit = sorted_by_price[cutoff_index].Hind;
 
     x.domain([0, x_upper_limit]);
 
@@ -124,6 +122,8 @@ updateGraph = function(rows) {
     svg.selectAll(".bar")
         .data(data)
         .exit()
+        .transition()
+        .delay(update_delay)
         .remove()
 
 

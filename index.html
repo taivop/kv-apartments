@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 <script src="js/kv-apartments.js"></script>
 
-<form>
+<form action="">
     <select id="part_of_city">
     </select>
 
@@ -18,7 +18,7 @@
 
     <p>Üldpind:</p>
     <input id="total_area" class="narrow_numeric" type="number" min="0" autocomplete="off">
-    <p>m<sup>2</sup></p>
+    <p>m<sup>2</sup> (+- 20%)</p>
 
     <p>Tube:</p>
     <input id="num_rooms_min" class="narrow_numeric" type="number" min="0">
@@ -29,6 +29,8 @@
     <input id="num_floor" class="narrow_numeric" type="number" min="0">
     <p>Korruseid:</p>
     <input id="num_floors_total" class="narrow_numeric" type="number" min="0">
+
+    <button type="button" id="submit_form">Näita</button>
 
 
 </form>

@@ -49,6 +49,10 @@ createGraph = function(rows) {
 }
 
 updateGraph = function(rows) {
+    if (rows.length <= 0) {
+        console.log("No datapoints.")
+        return;
+    }
 
     x.domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))]);
 
@@ -100,19 +104,52 @@ getFilteredRows = function(rows) {
     var part_of_city = s1.options[s1.selectedIndex].value;
     var s2 = document.getElementById("apartment_state");
     var apartment_state = s2.options[s2.selectedIndex].value;
+    var total_area = +document.getElementById("total_area").value;
+    var rooms_min = +document.getElementById("num_rooms_min").value;
+    var rooms_max = +document.getElementById("num_rooms_max").value;
+    var num_floor = +document.getElementById("num_floor").value;
+    var num_floors_total = +document.getElementById("num_floors_total").value;
+
 
     var filtered_rows = rows
         .filter(function(d) {
-            if(part_of_city == "[Linnaosa]")
+            if (part_of_city == "[Linnaosa]")
                 return true;
             else
                 return d.Linnaosa==part_of_city;
         })
         .filter(function(d) {
-            if(apartment_state == "[Korteri seisukord]")
+            if (apartment_state == "[Korteri seisukord]")
                 return true;
             else
                 return d.Seisukord == apartment_state;
+        })
+        .filter(function(d) {
+            if (total_area == 0)
+                return true;
+            else
+                return d.Üldpind >= 0.8 * total_area && d.Üldpind <= 1.2 * total_area;
+        })
+        .filter(function(d) {
+            return d.Tube >= rooms_min;
+        })
+        .filter(function(d) {
+            if (rooms_max == 0)
+                return true;
+            else
+                return d.Tube <= rooms_max;
+        })
+        .filter(function(d) {
+            if (num_floor == 0)
+                return true;
+            else
+                return d.Korrus == num_floor;
+        })
+        .filter(function(d) {
+            if (num_floors_total == 0)
+                return true;
+            else
+                return d.Korruseid == num_floors_total;
         })
 
     return filtered_rows;
@@ -159,6 +196,24 @@ ready = function(error, rows) {
         updateGraph(getFilteredRows(rows));
     });
     d3.select("select#apartment_state").on("input", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("input#total_area").on("focusout", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("input#num_rooms_min").on("focusout", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("input#num_rooms_max").on("focusout", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("input#num_floor").on("focusout", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("input#num_floors_total").on("focusout", function() {
+        updateGraph(getFilteredRows(rows));
+    });
+    d3.select("#submit_form").on("click", function() {
         updateGraph(getFilteredRows(rows));
     });
 }

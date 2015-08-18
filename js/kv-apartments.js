@@ -1,39 +1,6 @@
 
-
-ready = function(error, rows) {
-
-    // Populate form with options
-    features = {};
-    features.parts_of_city = d3.map(rows, function(d){ return d.Linnaosa; }).keys().sort();
-    features.parts_of_city.unshift("[Linnaosa]");
-    features.apartment_states = d3.map(rows, function(d){ return d.Seisukord; }).keys().sort();
-    features.apartment_states.unshift("[Korteri seisukord]");
-
-    d3.select("select#part_of_city")
-        .selectAll("option")
-        .data(features.parts_of_city)
-        .enter()
-        .append("option")
-        .attr("value", function(d) { return d; })
-        .text(function(d) { return d; })
-    
-
-    d3.select("select#apartment_state")
-        .selectAll("option")
-        .data(features.apartment_states)
-        .enter()
-        .append("option")
-        .attr("value", function(d) { return d; })
-        .text(function(d) { return d; })
-
-    // A formatter for counts.
-    var formatCount = d3.format(",.0f");
-
-    var margin = {top: 10, right: 30, bottom: 30, left: 30},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-
-    var x = d3.scale.linear()
+createGraph = function(rows) {
+    x = d3.scale.linear()
         .domain([0, Math.max(300000, d3.min(rows, function(d) { return d.Hind }))])
         .range([0, width]);
 
@@ -42,7 +9,7 @@ ready = function(error, rows) {
         .bins(x.ticks(20))
         .value(function(d) { return d.Hind; })
     (rows);
-    var y = d3.scale.linear()
+    y = d3.scale.linear()
         .domain([0, d3.max(data, function(d) { return d.y; })])
         .range([height, 0]);
 
@@ -78,10 +45,83 @@ ready = function(error, rows) {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+}
+
+updateGraph = function(rows) {
+
+    x.domain([0, Math.max(300000, d3.min(rows, function(d) { return d.Hind }))]);
+
+    var data = d3.layout.histogram()
+        .bins(x.ticks(20))
+        .value(function(d) { return d.Hind; })
+    (rows);
+
+    console.log(height)
+
+    y.domain([0, d3.max(data, function(d) { return d.y; })])
+
+    var svg = d3.select("body").select("svg")
+
+    var bars = svg.selectAll(".bar")
+        .data(data)
+        .transition()
+        .delay(300)
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+    svg.selectAll("rect")
+        .data(data)
+        .transition()
+        .delay(300)
+        .attr("width", x(data[0].dx) - 1)
+        .attr("height", function(d) { return height-y(d.y); });
+}
+
+
+ready = function(error, rows) {
+
+    // Populate form with options
+    features = {};
+    features.parts_of_city = d3.map(rows, function(d){ return d.Linnaosa; }).keys().sort();
+    features.parts_of_city.unshift("[Linnaosa]");
+    features.apartment_states = d3.map(rows, function(d){ return d.Seisukord; }).keys().sort();
+    features.apartment_states.unshift("[Korteri seisukord]");
+
+    d3.select("select#part_of_city")
+        .selectAll("option")
+        .data(features.parts_of_city)
+        .enter()
+        .append("option")
+        .attr("value", function(d) { return d; })
+        .text(function(d) { return d; })
+
+
+    d3.select("select#apartment_state")
+        .selectAll("option")
+        .data(features.apartment_states)
+        .enter()
+        .append("option")
+        .attr("value", function(d) { return d; })
+        .text(function(d) { return d; })
+
+    // A formatter for counts.
+    formatCount = d3.format(",.0f");
+
+    margin = {top: 10, right: 30, bottom: 30, left: 30},
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    createGraph(rows);
 
     // Update when inputs change
     d3.select("select#part_of_city").on("input", function() {
-        console.log(this.value)
+        selection = this.value
+        if(selection==="[Linnaosa]")
+            var rows_filtered = rows;
+        else
+            var rows_filtered = rows.filter(function(d) { return d.Linnaosa===selection })
+
+        updateGraph(rows_filtered);
+
     });
 }
 
@@ -102,6 +142,6 @@ rowParser = function(d) {
 
 // Load data
 var dsv = d3.dsv(";", "text/plain");
-dsv("data/apartment_sell_tallinn_test.csv")
+dsv("data/apartment_sell_tallinn.csv")
     .row(rowParser)
     .get(ready);

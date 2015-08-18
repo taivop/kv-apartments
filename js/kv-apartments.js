@@ -174,7 +174,8 @@ rowParser = function(d) {
         Seisukord: d.Seisukord,
         Tube: parseInt(d.Tube),
         Korrus: parseInt(d.Korrus),
-        Korruseid: parseInt(d.Korruseid)
+        Korruseid: parseInt(d.Korruseid),
+        Kuupäev: new Date(d.Kuupäev)
     };
 }
 

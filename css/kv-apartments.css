@@ -16,3 +16,11 @@ body {
     stroke: #000;
     shape-rendering: crispEdges;
 }
+
+form p {
+    display: inline-block;
+}
+
+input.narrow_numeric {
+    width: 40px;
+}

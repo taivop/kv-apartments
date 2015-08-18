@@ -111,33 +111,63 @@ updateGraph = function(rows) {
 
     y.domain([0, d3.max(data, function(d) { return d.y; })])
 
-    var update_delay = 100;
+    var update_duration = 500;
 
-    var bars = svg.selectAll(".bar")
+    var bar = svg.selectAll("g.bar")
         .data(data)
+
+    bar
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
 
-    svg.selectAll(".bar")
-        .data(data)
-        .exit()
+    bar_exit = bar.exit()
+    bar_exit
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
+        .attr("transform", function(d) { return "translate(" + (width + x(d.x)) + "," + height + ")"; })
         .remove()
+    bar_exit.selectAll("rect")
+        .transition()
+        .duration(update_duration)
+        .attr("height", "0")
+
+
+    bar_enter = bar.enter()
+        .append("g")
+        .attr("class", "bar")
+    bar_enter
+        .attr("transform", function(d) { return "translate(" + (width + x(d.x)) + "," + y(d.y) + ")"; })
+        .transition()
+        .duration(update_duration)
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
+    bar_enter
+        .append("rect")
+        .attr("x", 1)
+        .attr("width", x(data[0].dx) - 1)
+        .attr("height", function(d) { return height - y(d.y); })
+    bar_enter
+        .append("text")
+        .attr("class", "barlabel")
+        .attr("dy", ".75em")
+        .attr("y", "-1em")
+        .attr("x", x(data[0].dx) / 2)
+        .attr("text-anchor", "middle")
+        .text(function(d) { return formatCount(d.y); });
+
 
 
     svg.selectAll("rect")
         .data(data)
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height-y(d.y); });
 
     svg.selectAll("text.barlabel")
         .data(data)
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .attr("x", x(data[0].dx) / 2)
         .text(function(d) { return formatCount(d.y); });
 
@@ -145,7 +175,7 @@ updateGraph = function(rows) {
 
     svg.selectAll("g.x.axis")
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .call(xAxis);
 
     // Mean and median
@@ -155,13 +185,13 @@ updateGraph = function(rows) {
 
     svg.select("line#mean")
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .attr("x1", x(mean))
         .attr("x2", x(mean))
 
     svg.select("line#median")
         .transition()
-        .delay(update_delay)
+        .duration(update_duration)
         .attr("x1", x(median))
         .attr("x2", x(median))
 }

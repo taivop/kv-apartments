@@ -1,7 +1,7 @@
 
 createGraph = function(rows) {
     x = d3.scale.linear()
-        .domain([0, Math.max(300000, d3.min(rows, function(d) { return d.Hind }))])
+        .domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))])
         .range([0, width]);
 
     // Generate a histogram using twenty uniformly-spaced bins.
@@ -49,14 +49,12 @@ createGraph = function(rows) {
 
 updateGraph = function(rows) {
 
-    x.domain([0, Math.max(300000, d3.min(rows, function(d) { return d.Hind }))]);
+    x.domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))]);
 
     var data = d3.layout.histogram()
         .bins(x.ticks(20))
         .value(function(d) { return d.Hind; })
     (rows);
-
-    console.log(height)
 
     y.domain([0, d3.max(data, function(d) { return d.y; })])
 
@@ -65,15 +63,21 @@ updateGraph = function(rows) {
     var bars = svg.selectAll(".bar")
         .data(data)
         .transition()
-        .delay(300)
+        .delay(1500)
         .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
 
     svg.selectAll("rect")
         .data(data)
         .transition()
-        .delay(300)
+        .delay(1500)
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height-y(d.y); });
+
+    svg.selectAll("text")
+        .data(data)
+        .transition()
+        .delay(1500)
+        .text(function(d) { return formatCount(d.y); });
 }
 
 

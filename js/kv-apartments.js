@@ -51,7 +51,6 @@ createGraph = function(rows) {
 updateGraph = function(rows) {
 
     x.domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))]);
-    console.log("Max price " + d3.max(rows, function(d) { return d.Hind }))
 
     var data = d3.layout.histogram()
         .bins(x.ticks(20))
@@ -60,13 +59,19 @@ updateGraph = function(rows) {
 
     y.domain([0, d3.max(data, function(d) { return d.y; })])
 
-    var update_delay = 500;
+    var update_delay = 100;
 
     var bars = svg.selectAll(".bar")
         .data(data)
         .transition()
         .delay(update_delay)
-        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
+
+    svg.selectAll(".bar")
+        .data(data)
+        .exit()
+        .remove()
+
 
     svg.selectAll("rect")
         .data(data)

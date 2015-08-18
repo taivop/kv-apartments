@@ -13,7 +13,7 @@ ready = function(error, rows) {
         height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
-        .domain([0, 200000])
+        .domain([0, Math.max(300000, d3.min(rows, function(d) { return d.Hind }))])
         .range([0, width]);
 
 // Generate a histogram using twenty uniformly-spaced bins.
@@ -63,6 +63,6 @@ ready = function(error, rows) {
 
 // Load data
 var dsv = d3.dsv(";", "text/plain");
-dsv("data/apartment_sell_tallinn_test.csv")
+dsv("data/apartment_sell_tallinn.csv")
     .row(function(d) { return {ID: d.ID, Hind: parseFloat(d.Hind)}; })
     .get(ready);

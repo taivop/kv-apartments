@@ -12,6 +12,71 @@ d3.selection.prototype.moveToFront = function() {
     });
 };
 
+updateSamplesTable = function(rows) {
+
+    // Sample dataset for rows
+    /*var rows_copy = rows.slice()
+     rows_copy = rows_copy.sort( function() { return 0.5 - Math.random() } );
+     var sampled_rows = rows_copy.slice(0, Math.min(20, rows_copy.length))*/
+    var rows_copy = rows.slice()
+     rows_copy = rows_copy.sort( function(d1, d2) { return d2.Kuupäev - d1.Kuupäev } );
+     var sampled_rows = rows_copy.slice(0, Math.min(20, rows_copy.length))
+
+
+    var table_rows = d3.select("table#samples tbody")
+        .selectAll(".generated_row")
+        .data(sampled_rows, function(d) { return d.ID; }) // Bind by ad ID
+
+    table_rows
+        .exit()
+        .remove()
+
+    var table_rows_enter = table_rows
+        .enter()
+        .append("tr")
+        .attr("class", "generated_row")
+
+    table_rows_enter
+        .append("td")
+        .append("a")
+        .attr("href", function(d) { return "http://kv.ee/" + d.ID; })
+        .text(function(d) {return d.ID})
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Hind})
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Linnaosa})
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Üldpind })
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Seisukord})
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Tube} )
+
+    table_rows_enter
+        .append("td")
+        .text(function(d) {return d.Korrus + "/" + d.Korruseid})
+
+    /*ID: d.ID,
+     Hind: parseFloat(d.HindKohandatud),
+     Linnaosa: d.Linnaosa,
+     Üldpind: d.Üldpind,
+     Seisukord: d.Seisukord,
+     Tube: parseInt(d.Tube),
+     Korrus: parseInt(d.Korrus),
+     Korruseid: parseInt(d.Korruseid),
+     Kuupäev: new Date(d.Kuupäev)*/
+}
+
 createGraph = function(rows) {
 
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
@@ -89,6 +154,8 @@ createGraph = function(rows) {
         .attr("y2", y(d3.max(data, function(d) { return d.y; })))
         .attr("stroke", "red")
         .attr("stroke-width", 1)
+
+    updateSamplesTable(rows);
 }
 
 updateGraph = function(rows) {
@@ -205,6 +272,8 @@ updateGraph = function(rows) {
         .duration(update_duration)
         .attr("x1", x(median))
         .attr("x2", x(median))
+
+    updateSamplesTable(rows);
 }
 
 getFilteredRows = function(rows) {

@@ -77,6 +77,7 @@ updateGraph = function(rows) {
         .data(data)
         .transition()
         .delay(1500)
+        .attr("x", x(data[0].dx) / 2)
         .text(function(d) { return formatCount(d.y); });
 }
 

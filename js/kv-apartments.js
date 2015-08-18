@@ -6,6 +6,12 @@ setMeanMedianText = function(mean, median) {
         .text(Math.round(median))
 }
 
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};
+
 createGraph = function(rows) {
 
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
@@ -182,6 +188,11 @@ updateGraph = function(rows) {
     var mean = d3.mean(rows, function(d) { return d.Hind; })
     var median = d3.median(rows, function(d) { return d.Hind; })
     setMeanMedianText(mean, median);
+
+    svg.select("line#mean")
+        .moveToFront()
+    svg.select("line#median")
+        .moveToFront()
 
     svg.select("line#mean")
         .transition()

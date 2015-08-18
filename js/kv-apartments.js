@@ -1,4 +1,11 @@
 
+setMeanMedianText = function(mean, median) {
+    d3.select("div#info span#mean")
+        .text(Math.round(mean))
+    d3.select("div#info span#median")
+        .text(Math.round(median))
+}
+
 createGraph = function(rows) {
     x = d3.scale.linear()
         .domain([0, Math.min(1000000, d3.max(rows, function(d) { return d.Hind }))])
@@ -17,11 +24,12 @@ createGraph = function(rows) {
         .scale(x)
         .orient("bottom");
 
-    svg = d3.select("body").append("svg")
+    svg = d3.select("body").select("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
     var bar = svg.selectAll(".bar")
         .data(data)
@@ -46,6 +54,30 @@ createGraph = function(rows) {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
+    // Mean and median
+    var mean = d3.mean(rows, function(d) { return d.Hind; })
+    var median = d3.median(rows, function(d) { return d.Hind; })
+    setMeanMedianText(mean, median);
+
+    svg.append("line")
+        .attr("id", "mean")
+        .attr("x1", x(mean))
+        .attr("x2", x(mean))
+        .attr("y1", y(0))
+        .attr("y2", y(d3.max(data, function(d) { return d.y; })))
+        .attr("stroke", "red")
+        .attr("stroke-dasharray", "5, 5")
+        .attr("stroke-width", 1)
+
+    svg.append("line")
+        .attr("id", "median")
+        .attr("x1", x(median))
+        .attr("x2", x(median))
+        .attr("y1", y(0))
+        .attr("y2", y(d3.max(data, function(d) { return d.y; })))
+        .attr("stroke", "red")
+        .attr("stroke-width", 1)
 }
 
 updateGraph = function(rows) {
@@ -104,6 +136,22 @@ updateGraph = function(rows) {
         .transition()
         .delay(update_delay)
         .call(xAxis);
+
+    // Mean and median
+    var mean = d3.mean(rows, function(d) { return d.Hind; })
+    var median = d3.median(rows, function(d) { return d.Hind; })
+
+    svg.select("line#mean")
+        .transition()
+        .delay(update_delay)
+        .attr("x1", x(mean))
+        .attr("x2", x(mean))
+
+    svg.select("line#median")
+        .transition()
+        .delay(update_delay)
+        .attr("x1", x(median))
+        .attr("x2", x(median))
 }
 
 getFilteredRows = function(rows) {

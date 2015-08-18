@@ -29,3 +29,7 @@ div#alert span#message {
     display: none;
     color: red;
 }
+
+svg {
+    min-height: 500px;
+}

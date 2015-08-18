@@ -8,7 +8,7 @@ body {
 }
 
 .bar text {
-    fill: #fff;
+    fill: #black;
 }
 
 .axis path, .axis line {

@@ -37,7 +37,7 @@ createGraph = function(rows) {
     bar.append("text")
         .attr("class", "barlabel")
         .attr("dy", ".75em")
-        .attr("y", 6)
+        .attr("y", "-1em")
         .attr("x", x(data[0].dx) / 2)
         .attr("text-anchor", "middle")
         .text(function(d) { return formatCount(d.y); });
@@ -185,7 +185,7 @@ ready = function(error, rows) {
     // A formatter for counts.
     formatCount = d3.format(",.0f");
 
-    margin = {top: 10, right: 30, bottom: 30, left: 30},
+    margin = {top: 20, right: 30, bottom: 30, left: 30},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 

@@ -140,6 +140,7 @@ updateGraph = function(rows) {
     // Mean and median
     var mean = d3.mean(rows, function(d) { return d.Hind; })
     var median = d3.median(rows, function(d) { return d.Hind; })
+    setMeanMedianText(mean, median);
 
     svg.select("line#mean")
         .transition()

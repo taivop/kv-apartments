@@ -19,9 +19,10 @@ body {
 form div.unit {
     display: inline-block;
     padding: 5px 5px 10px 10px;
+    vertical-align: top;
 }
 
-form div.unit p {
+div.unit p, div.unit input, div.unit select {
     display: inline;
 }
 
@@ -46,13 +47,14 @@ svg {
 
 p#p-mean {
     border-bottom: 1px dashed red;
-    margin-left: 30px;
-    display: inline;
+    margin: 5px 15px;
+    display: inline-block;
 }
 
 p#p-median {
     border-bottom: 1px solid red;
-    display: inline;
+    margin: 5px 15px;
+    display: inline-block;
 }
 
 #mean, #median {

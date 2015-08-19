@@ -149,6 +149,12 @@ createGraph = function(rows) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+    // x axis label
+    svg.append("text")
+        .text("Hind, €")
+        .attr({x: width/2, y: height + 30})
+        .style("font-weight", "bold")
+
     // Mean and median
     var mean = d3.mean(rows, function(d) { return d.Hind; })
     var median = d3.median(rows, function(d) { return d.Hind; })
@@ -381,7 +387,7 @@ ready = function(error, rows) {
     formatCount = d3.format(",.0f");
     formatPrice = d3.format(",.0f");
 
-    margin = {top: 20, right: 30, bottom: 30, left: 30},
+    margin = {top: 20, right: 30, bottom: 50, left: 30},
         width = 700 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 

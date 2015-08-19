@@ -22,6 +22,8 @@ updateSamplesTable = function(rows) {
      rows_copy = rows_copy.sort( function(d1, d2) { return d2.Kuupäev - d1.Kuupäev } );
      var sampled_rows = rows_copy.slice(0, Math.min(20, rows_copy.length))
 
+    transition_duration = 400
+    transition_duration_step = 20;
 
     var table_rows = d3.select("table#samples tbody")
         .selectAll(".generated_row")
@@ -29,12 +31,28 @@ updateSamplesTable = function(rows) {
 
     table_rows
         .exit()
+        .transition()
+        .duration(transition_duration)
+        .style("color", "white")
         .remove()
 
     var table_rows_enter = table_rows
         .enter()
         .append("tr")
         .attr("class", "generated_row")
+
+    d3.selectAll("table tr.generated_row")
+        .style("color", "white")
+        .transition()
+        .duration(function(d, i) { return transition_duration + i * transition_duration_step; })
+        .style("color", "black")
+
+    asd = d3.selectAll("tr.generated_row").selectAll("a")
+        .style("color", "white")
+        .transition()
+        .duration(function(d, i) { return transition_duration + i * transition_duration_step; })
+        .style("color", "black")
+    console.log(asd)
 
     table_rows_enter
         .append("td")

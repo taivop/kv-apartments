@@ -48,3 +48,8 @@ p#median {
     border-bottom: 1px solid red;
     display: inline;
 }
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: underline;
+    color: black;
+}

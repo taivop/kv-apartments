@@ -75,5 +75,5 @@ a:link, a:visited, a:hover, a:active {
 }
 
 button#submit_form {
-    width: 100px;
+    width: 100%;
 }

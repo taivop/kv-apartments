@@ -47,12 +47,11 @@ updateSamplesTable = function(rows) {
         .duration(function(d, i) { return transition_duration + i * transition_duration_step; })
         .style("color", "black")
 
-    asd = d3.selectAll("tr.generated_row").selectAll("a")
+    d3.selectAll("tr.generated_row").selectAll("a")
         .style("color", "white")
         .transition()
         .duration(function(d, i) { return transition_duration + i * transition_duration_step; })
         .style("color", "black")
-    console.log(asd)
 
     table_rows_enter
         .append("td")
@@ -152,7 +151,7 @@ createGraph = function(rows) {
     // x axis label
     svg.append("text")
         .text("Hind, €")
-        .attr({x: width/2, y: height + 30})
+        .attr({"x": width/2, "y": height + 30, "text-anchor": "middle"})
         .style("font-weight", "bold")
 
     // Mean and median

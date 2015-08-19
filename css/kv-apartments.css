@@ -39,14 +39,19 @@ svg {
     min-height: 500px;
 }
 
-p#mean {
+p#p-mean {
     border-bottom: 1px dashed red;
+    display: inline;
+    margin-left: 10px;
+}
+
+p#p-median {
+    border-bottom: 1px solid red;
     display: inline;
 }
 
-p#median {
-    border-bottom: 1px solid red;
-    display: inline;
+table {
+    display: none;
 }
 
 a:link, a:visited, a:hover, a:active {

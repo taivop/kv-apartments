@@ -5,6 +5,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="css/pace.css"/>
     <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" type="text/css" href="css/kv-apartments.css"/>
 
 </head>
@@ -13,55 +14,61 @@
 <script src="js/pace.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js" charset="utf-8"></script>
 <script src="js/kv-apartments.js"></script>
+<div class="pure-u-1">
+    <form action="" class="pure-form">
+        <div class="unit">
+        <select id="part_of_city" style="min-width: 100px;">
+        </select>
+        </div>
 
-<form action="">
-    <div class="unit">
-    <select id="part_of_city" style="min-width: 100px;">
-    </select>
-    </div>
+        <div class="unit">
+        <select id="apartment_state" style="min-width: 140px;">
+        </select>
+        </div>
 
-    <div class="unit">
-    <select id="apartment_state" style="min-width: 140px;">
-    </select>
-    </div>
+        <div class="unit">
+        <p>Üldpind:</p>
+        <input id="total_area" class="narrow_numeric" type="number" min="0" autocomplete="off">
+        <p>m<sup>2</sup> &plusmn; 20%</p>
+        </div>
 
-    <div class="unit">
-    <p>Üldpind:</p>
-    <input id="total_area" class="narrow_numeric" type="number" min="0" autocomplete="off">
-    <p>m<sup>2</sup> &plusmn; 20%</p>
-    </div>
+        <div class="unit">
+        <p>Tube:</p>
+        <input id="num_rooms_min" class="narrow_numeric" type="number" min="0">
+        <p>kuni</p>
+        <input id="num_rooms_max" class="narrow_numeric" type="number" min="0">
+        </div>
 
-    <div class="unit">
-    <p>Tube:</p>
-    <input id="num_rooms_min" class="narrow_numeric" type="number" min="0">
-    <p>kuni</p>
-    <input id="num_rooms_max" class="narrow_numeric" type="number" min="0">
-    </div>
+        <div class="unit">
+        <p>Korrus:</p>
+        <input id="num_floor" class="narrow_numeric" type="number" min="0">
+        <p>Korruseid:</p>
+        <input id="num_floors_total" class="narrow_numeric" type="number" min="0">
+        </div>
 
-    <div class="unit">
-    <p>Korrus:</p>
-    <input id="num_floor" class="narrow_numeric" type="number" min="0">
-    <p>Korruseid:</p>
-    <input id="num_floors_total" class="narrow_numeric" type="number" min="0">
-    </div>
-
-    <div class="unit">
-    <button type="button" id="submit_form">Näita</button>
-    </div>
-</form>
-
-<div id="alert">
-    <span id="message">Kõik korras</span>
+        <div class="unit">
+        <button type="button" id="submit_form" class="pure-button pure-button-primary">Näita</button>
+        </div>
+    </form>
 </div>
 
-<svg></svg>
-
-<div id="info">
-    <p id="mean">Keskmine hind: <span id="mean">0</span>€</p>
-    <p id="median">Mediaanhind: <span id="median">0</span>€</p>
+<div class="pure-u-1">
+    <div id="alert">
+        <span id="message">Kõik korras</span>
+    </div>
 </div>
 
-<table id="samples">
+<div class="pure-u-1">
+    <svg></svg>
+
+    <div id="info">
+        <p id="p-median">Mediaanhind: <span id="median">0</span>€</p>
+        <p id="p-mean">Keskmine hind: <span id="mean">0</span>€</p>
+    </div>
+</div>
+
+<div class="pure-u-1">
+<table id="samples" class="pure-table">
     <thead>
     <th>Kuulutuse ID</th>
     <th>Hind*, €</th>
@@ -76,6 +83,7 @@
     <tbody>
     </tbody>
 </table>
+<div class="pure-u-1">
 
 
 </body>

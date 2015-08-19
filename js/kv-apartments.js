@@ -381,7 +381,7 @@ ready = function(error, rows) {
     formatCount = d3.format(",.0f");
 
     margin = {top: 20, right: 30, bottom: 30, left: 30},
-        width = 960 - margin.left - margin.right,
+        width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     createGraph(rows);

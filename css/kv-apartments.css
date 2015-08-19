@@ -39,15 +39,23 @@ svg {
     min-height: 300px;
 }
 
+#info {
+    text-align: center;
+}
+
 p#p-mean {
     border-bottom: 1px dashed red;
+    margin-left: 30px;
     display: inline;
-    margin-left: 10px;
 }
 
 p#p-median {
     border-bottom: 1px solid red;
     display: inline;
+}
+
+#mean, #median {
+    font-weight: bold;
 }
 
 table {

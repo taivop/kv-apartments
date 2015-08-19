@@ -421,22 +421,34 @@ ready = function(error, rows) {
 
 
 
-rowParser = function(d) {
-    return {
-        ID: d.ID,
-        Hind: parseFloat(d.HindKohandatud),
-        Linnaosa: d.Linnaosa,
-        Üldpind: d.Üldpind,
-        Seisukord: d.Seisukord,
-        Tube: parseInt(d.Tube),
-        Korrus: parseInt(d.Korrus),
-        Korruseid: parseInt(d.Korruseid),
-        Kuupäev: new Date(d.Kuupäev)
-    };
-}
+// Get and unzip data file
+JSZipUtils.getBinaryContent('data/apartment_sell_tallinn.csv.zip', function(err, data) {
+    if(err) {
+        throw err; // or handle err
+    }
 
-// Load data
-var dsv = d3.dsv(";", "text/plain");
-dsv("data/apartment_sell_tallinn.csv")
-    .row(rowParser)
-    .get(ready);
+    var zip = new JSZip(data);
+    csv_string = zip.file("apartment_sell_tallinn.csv").asText();
+
+    // Load data
+    rowParser = function(d) {
+        return {
+            ID: d.ID,
+            Hind: parseFloat(d.HindKohandatud),
+            Linnaosa: d.Linnaosa,
+            Üldpind: d.Üldpind,
+            Seisukord: d.Seisukord,
+            Tube: parseInt(d.Tube),
+            Korrus: parseInt(d.Korrus),
+            Korruseid: parseInt(d.Korruseid),
+            Kuupäev: new Date(d.Kuupäev)
+        };
+    }
+
+    // Parse csv
+    var dsv = d3.dsv(";", "text/plain");
+    var rows = dsv.parse(csv_string, rowParser)
+    console.log(rows.length)
+    // Fire away
+    ready(undefined, rows)
+});

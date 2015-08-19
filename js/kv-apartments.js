@@ -435,7 +435,7 @@ JSZipUtils.getBinaryContent('data/apartment_sell_tallinn.csv.zip', function(err,
         return {
             ID: d.ID,
             Hind: parseFloat(d.HindKohandatud),
-            Linnaosa: d.Linnaosa,
+            Linnaosa: d.Linnaosa=="PõhjaTallinn" ? "Põhja-Tallinn" : d.Linnaosa,
             Üldpind: d.Üldpind,
             Seisukord: d.Seisukord,
             Tube: parseInt(d.Tube),
@@ -448,7 +448,7 @@ JSZipUtils.getBinaryContent('data/apartment_sell_tallinn.csv.zip', function(err,
     // Parse csv
     var dsv = d3.dsv(";", "text/plain");
     var rows = dsv.parse(csv_string, rowParser)
-    console.log(rows.length)
+    console.log(rows.length + " rows")
     // Fire away
     ready(undefined, rows)
 });

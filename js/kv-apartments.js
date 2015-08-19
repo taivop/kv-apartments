@@ -382,7 +382,7 @@ ready = function(error, rows) {
 
     margin = {top: 20, right: 30, bottom: 30, left: 30},
         width = 700 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = 300 - margin.top - margin.bottom;
 
     createGraph(rows);
 

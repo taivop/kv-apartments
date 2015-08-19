@@ -1,9 +1,9 @@
 
 setMeanMedianText = function(mean, median) {
     d3.select("div#info span#mean")
-        .text(Math.round(mean))
+        .text(formatPrice(Math.round(mean)))
     d3.select("div#info span#median")
-        .text(Math.round(median))
+        .text(formatPrice(Math.round(median)))
 }
 
 d3.selection.prototype.moveToFront = function() {
@@ -379,6 +379,7 @@ ready = function(error, rows) {
 
     // A formatter for counts.
     formatCount = d3.format(",.0f");
+    formatPrice = d3.format(",.0f");
 
     margin = {top: 20, right: 30, bottom: 30, left: 30},
         width = 700 - margin.left - margin.right,

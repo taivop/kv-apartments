@@ -3,7 +3,7 @@ body {
 }
 
 .bar rect {
-    fill: steelblue;
+    fill: #3567cc;
     shape-rendering: crispEdges;
 }
 
@@ -65,4 +65,8 @@ table {
 a:link, a:visited, a:hover, a:active {
     text-decoration: underline;
     color: black;
+}
+
+.blue-button {
+    background-color: #3567cc;
 }

@@ -1,11 +1,10 @@
 body {
-    font: 10px sans-serif;
+    font-size: 14px;
 }
 
 .bar rect {
     fill: #3567cc;
-    shape-rendering: crispEdges;
-}
+    shape-rendering: crispEdges;  }
 
 .bar text {
     fill: #black;
@@ -37,6 +36,8 @@ div#alert span#message {
 
 svg {
     min-height: 300px;
+    font: 10px sans-serif;
+
 }
 
 #info {
@@ -69,4 +70,8 @@ a:link, a:visited, a:hover, a:active {
 
 .blue-button {
     background-color: #3567cc;
+}
+
+button#submit_form {
+    width: 100px;
 }

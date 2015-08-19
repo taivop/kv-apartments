@@ -48,6 +48,7 @@ svg {
 p#p-mean {
     border-bottom: 1px dashed red;
     margin: 5px 15px;
+    margin-bottom: 15px;
     display: inline-block;
 }
 

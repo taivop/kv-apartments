@@ -38,3 +38,13 @@ div#alert span#message {
 svg {
     min-height: 500px;
 }
+
+p#mean {
+    border-bottom: 1px dashed red;
+    display: inline;
+}
+
+p#median {
+    border-bottom: 1px solid red;
+    display: inline;
+}

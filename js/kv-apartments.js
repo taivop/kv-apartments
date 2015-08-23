@@ -96,6 +96,11 @@ updateSamplesTable = function(rows) {
 
 createGraph = function(rows) {
 
+    // Need to filter at first because ad type is set to rentals
+    rows = rows.filter(function(d) {
+            return d.Tüüp=="Anda üürile";
+        })
+
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
     var cutoff_index = Math.floor(sorted_by_price.length * 0.99);
     var x_upper_limit = sorted_by_price[cutoff_index].Hind;
@@ -304,14 +309,20 @@ getFilteredRows = function(rows) {
     var part_of_city = s1.options[s1.selectedIndex].value;
     var s2 = document.getElementById("apartment_state");
     var apartment_state = s2.options[s2.selectedIndex].value;
+    var s3 = document.getElementById("type_of_ad");
+    var type_of_ad = s3.options[s3.selectedIndex].value;
     var total_area = +document.getElementById("total_area").value;
     var rooms_min = +document.getElementById("num_rooms_min").value;
     var rooms_max = +document.getElementById("num_rooms_max").value;
     var num_floor = +document.getElementById("num_floor").value;
     var num_floors_total = +document.getElementById("num_floors_total").value;
 
+    console.log(type_of_ad);
 
     var filtered_rows = rows
+        .filter(function(d) {
+            return d.Tüüp==type_of_ad;
+        })
         .filter(function(d) {
             if (part_of_city == "[Linnaosa]")
                 return true;
@@ -364,6 +375,8 @@ ready = function(error, rows) {
     features.parts_of_city.unshift("[Linnaosa]");
     features.apartment_states = d3.map(rows, function(d){ return d.Seisukord; }).keys().sort();
     features.apartment_states.unshift("[Korteri seisukord]");
+    features.ad_types = d3.map(rows, function(d){ return d.Tüüp; }).keys().sort();
+
 
     d3.select("select#part_of_city")
         .selectAll("option")
@@ -382,6 +395,14 @@ ready = function(error, rows) {
         .attr("value", function(d) { return d; })
         .text(function(d) { return d; })
 
+    d3.select("select#type_of_ad")
+        .selectAll("option")
+        .data(features.ad_types)
+        .enter()
+        .append("option")
+        .attr("value", function(d) { return d; })
+        .text(function(d) { return d; })
+
     // A formatter for counts.
     formatCount = d3.format(",.0f");
     formatPrice = d3.format(",.0f");
@@ -393,6 +414,9 @@ ready = function(error, rows) {
     createGraph(rows);
 
     // Update when inputs change
+    d3.select("select#type_of_ad").on("input", function() {
+        updateGraph(getFilteredRows(rows));
+    });
     d3.select("select#part_of_city").on("input", function() {
         updateGraph(getFilteredRows(rows));
     });
@@ -422,13 +446,13 @@ ready = function(error, rows) {
 
 
 // Get and unzip data file
-JSZipUtils.getBinaryContent('data/apartment_sell_tallinn.csv.zip', function(err, data) {
+JSZipUtils.getBinaryContent('data/apartment_both_tallinn.csv.zip', function(err, data) {
     if(err) {
         throw err; // or handle err
     }
 
     var zip = new JSZip(data);
-    csv_string = zip.file("apartment_sell_tallinn.csv").asText();
+    csv_string = zip.file("apartment_both_tallinn.csv").asText();
 
     // Load data
     rowParser = function(d) {
@@ -441,7 +465,8 @@ JSZipUtils.getBinaryContent('data/apartment_sell_tallinn.csv.zip', function(err,
             Tube: parseInt(d.Tube),
             Korrus: parseInt(d.Korrus),
             Korruseid: parseInt(d.Korruseid),
-            Kuupäev: new Date(d.Kuupäev)
+            Kuupäev: new Date(d.Kuupäev),
+            Tüüp: d.Tüüp
         };
     }
 

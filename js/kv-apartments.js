@@ -213,7 +213,7 @@ updateGraph = function(rows) {
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
     var cutoff_index = Math.floor(sorted_by_price.length * 0.99);
     var x_upper_limit = sorted_by_price[cutoff_index].Hind;
-
+    
     x.domain([0, x_upper_limit]);
 
     var data = d3.layout.histogram()

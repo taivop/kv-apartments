@@ -199,6 +199,17 @@ updateGraph = function(rows) {
             .text("")
     }
 
+    // Select colour based on ad type
+    colour_rentals = "#ffc29e";
+    colour_sales = "#9cc0ef";
+    var s3 = document.getElementById("type_of_ad");
+    var type_of_ad = s3.options[s3.selectedIndex].value;
+    var colour_bars = colour_sales;
+    if(type_of_ad == "Anda üürile")
+        colour_bars = colour_rentals;
+
+
+
     var sorted_by_price = rows.sort(function(d1, d2) { return d1.Hind - d2.Hind; });
     var cutoff_index = Math.floor(sorted_by_price.length * 0.99);
     var x_upper_limit = sorted_by_price[cutoff_index].Hind;
@@ -247,6 +258,7 @@ updateGraph = function(rows) {
         .attr("x", 1)
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height - y(d.y); })
+        .style("fill", colour_bars)
     bar_enter
         .append("text")
         .attr("class", "barlabel")
@@ -262,6 +274,7 @@ updateGraph = function(rows) {
         .data(data)
         .transition()
         .duration(update_duration)
+        .style("fill", colour_bars)
         .attr("width", x(data[0].dx) - 1)
         .attr("height", function(d) { return height-y(d.y); });
 

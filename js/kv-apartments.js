@@ -459,27 +459,27 @@ ready = function(error, rows) {
 
 
 // Get and unzip data file
-JSZipUtils.getBinaryContent('data/apartment_both_tallinn.csv.zip', function(err, data) {
+JSZipUtils.getBinaryContent('data/apartment_rent_tartu.csv.zip', function(err, data) {
     if(err) {
         throw err; // or handle err
     }
 
     var zip = new JSZip(data);
-    csv_string = zip.file("apartment_both_tallinn.csv").asText();
+    csv_string = zip.file("apartment_rent_tartu.csv").asText();
 
     // Load data
     rowParser = function(d) {
         return {
             ID: d.ID,
             Hind: parseFloat(d.HindKohandatud),
-            Linnaosa: d.Linnaosa=="PõhjaTallinn" ? "Põhja-Tallinn" : d.Linnaosa,
+            Linnaosa: d.Linnaosa,
             Üldpind: d.Üldpind,
             Seisukord: d.Seisukord,
             Tube: parseInt(d.Tube),
             Korrus: parseInt(d.Korrus),
             Korruseid: parseInt(d.Korruseid),
             Kuupäev: new Date(d.Kuupäev),
-            Tüüp: d.Tüüp
+            Tüüp: "Anda üürile"
         };
     }
 

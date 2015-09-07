@@ -459,13 +459,13 @@ ready = function(error, rows) {
 
 
 // Get and unzip data file
-JSZipUtils.getBinaryContent('data/apartment_rent_tartu.csv.zip', function(err, data) {
+JSZipUtils.getBinaryContent('data/apartment_both_tartu.csv.zip', function(err, data) {
     if(err) {
         throw err; // or handle err
     }
 
     var zip = new JSZip(data);
-    csv_string = zip.file("apartment_rent_tartu.csv").asText();
+    csv_string = zip.file("apartment_both_tartu.csv").asText();
 
     // Load data
     rowParser = function(d) {
@@ -479,7 +479,7 @@ JSZipUtils.getBinaryContent('data/apartment_rent_tartu.csv.zip', function(err, d
             Korrus: parseInt(d.Korrus),
             Korruseid: parseInt(d.Korruseid),
             Kuupäev: new Date(d.Kuupäev),
-            Tüüp: "Anda üürile"
+            Tüüp: d.Tüüp
         };
     }
 

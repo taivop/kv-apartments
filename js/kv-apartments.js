@@ -1,3 +1,100 @@
+// http://stackoverflow.com/questions/4907843/open-a-url-in-a-new-tab-using-javascript
+openInNewTab = function(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+
+generateLink = function(o, data) {
+    example_price = data[0].Hind;
+    bins = hist.bins()();
+
+    // Special case if clicked on last bin
+    if(example_price >= bins[bins.length-2]) {
+        var price_min = bins[bins.length - 2]
+        var price_max = ""
+    } else {
+        bins_larger = bins.filter(function(d) { return d > example_price; });
+        bins_smaller = bins.filter(function(d) { return d <= example_price; });
+
+        var price_max = bins_larger[0]
+        var price_min = bins_smaller[bins_smaller.length-1]
+    }
+
+    var s1 = document.getElementById("part_of_city");
+    var part_of_city = s1.options[s1.selectedIndex].value;
+    if(part_of_city == "[Linnaosa]")
+        part_of_city = ""
+    var s2 = document.getElementById("apartment_state");
+    var apartment_state = s2.options[s2.selectedIndex].value;
+    if(apartment_state == "[Korteri seisukord]")
+        apartment_state = ""
+    var s3 = document.getElementById("type_of_ad");
+    var type_of_ad = s3.options[s3.selectedIndex].value;
+    var deal_type = 1
+    if(type_of_ad == "Anda üürile")
+        deal_type = 2
+    console.log(type_of_ad)
+    console.log(deal_type)
+    var total_area = +document.getElementById("total_area").value;
+    var area_min = Math.round(total_area * 0.8);
+    var area_max = Math.round(total_area * 1.2);
+    var rooms_min = document.getElementById("num_rooms_min").value;
+    var rooms_max = document.getElementById("num_rooms_max").value;
+    var num_floor = document.getElementById("num_floor").value;
+    var floor_min = num_floor;
+    var floor_max = num_floor;
+
+    // Part of city
+    if(part_of_city == "[Linnaosa]") {
+        part_of_city_string = "";
+    } else {
+        part_of_city_map = {
+            "Haabersti": 13237,
+            "Kesklinn": 13238,
+            "Kristiine": 13239,
+            "Lasnamäe": 13240,
+            "Mustamäe": 13241,
+            "Nõmme": 13242,
+            "Pirita": 13243,
+            "Põhja-Tallinn": 13244,
+            "Vanalinn": 400,
+            "Annelinn": 13255,
+            "Ihaste": 13256,
+            "Jaamamõisa": 13265,
+            "Karlova": 13257,
+            "Kesklinn": 13254,
+            "Maarjamõisa": 66078,
+            "Raadi-Kruusamäe": 13259,
+            "Ropka": 13258,
+            "Ropka tööstusrajoon": 66154,
+            "Ränilinn": 13262,
+            "Supilinn": 13263,
+            "Tammelinn": 13251,
+            "Tähtvere": 13252,
+            "Vaksali": 13264,
+            "Variku": 13260,
+            "Veeriku": 13253,
+            "Ülejõe": 13261
+        }
+
+        part_of_city_id = part_of_city_map[part_of_city]
+        part_of_city_string = "city%5B%5D=" + part_of_city_id + "&";
+    }
+
+    var county_id = 1       // Harjumaa
+    var parish_id = 421     // Tallinn
+
+    link_string = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=50&deal_type=" + deal_type +
+        "&dt_select=" + deal_type +"&county=" + county_id + "&parish=" + parish_id + "&" + part_of_city_string +
+        "price_min=" + price_min + "&price_max=" + price_max + "&price_type=1&rooms_min=" + rooms_min +
+        "&rooms_max=" + rooms_max + "&area_min=" + area_min + "&area_max=" + area_max + "&floor_min=" + floor_min +
+        "&floor_max=" + floor_max + "&keyword="
+
+    openInNewTab(link_string);
+
+    // take one object and find price limits
+
+}
 
 setMeanMedianText = function(mean, median) {
     d3.select("div#info span#mean")
@@ -110,10 +207,10 @@ createGraph = function(rows) {
         .range([0, width]);
 
     // Generate a histogram using twenty uniformly-spaced bins.
-    var data = d3.layout.histogram()
+    hist = d3.layout.histogram()
         .bins(x.ticks(20))
-        .value(function(d) { return d.Hind; })
-    (rows);
+        .value(function(d) { return d.Hind; });
+    data = hist(rows);
     y = d3.scale.linear()
         .domain([0, d3.max(data, function(d) { return d.y; })])
         .range([height, 0]);
@@ -147,6 +244,10 @@ createGraph = function(rows) {
         .attr("x", x(data[0].dx) / 2)
         .attr("text-anchor", "middle")
         .text(function(d) { return formatCount(d.y); });
+
+    bar.on("click", function(d) {
+        generateLink(this, d);
+    })
 
     svg.append("g")
         .attr("class", "x axis")
@@ -216,10 +317,10 @@ updateGraph = function(rows) {
     
     x.domain([0, x_upper_limit]);
 
-    var data = d3.layout.histogram()
+    hist = d3.layout.histogram()
         .bins(x.ticks(20))
-        .value(function(d) { return d.Hind; })
-    (rows);
+        .value(function(d) { return d.Hind; });
+    var data = hist(rows);
 
     y.domain([0, d3.max(data, function(d) { return d.y; })])
 
@@ -267,6 +368,9 @@ updateGraph = function(rows) {
         .attr("x", x(data[0].dx) / 2)
         .attr("text-anchor", "middle")
         .text(function(d) { return formatCount(d.y); });
+    bar_enter.on("click", function(d) {
+        generateLink(this, d);
+    })
 
 
 

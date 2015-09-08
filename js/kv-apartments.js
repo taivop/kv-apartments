@@ -78,6 +78,8 @@ generateLink = function(o, data) {
         }
 
         part_of_city_id = part_of_city_map[part_of_city]
+        if(part_of_city == "[Linnaosa]")
+            part_of_city_id = ""
         part_of_city_string = "city%5B%5D=" + part_of_city_id + "&";
     }
 

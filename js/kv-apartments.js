@@ -81,8 +81,8 @@ generateLink = function(o, data) {
         part_of_city_string = "city%5B%5D=" + part_of_city_id + "&";
     }
 
-    var county_id = 1       // Harjumaa
-    var parish_id = 421     // Tallinn
+    var county_id = 12       // Tartumaa
+    var parish_id = 450      // Tartu
 
     link_string = "http://www.kv.ee/?act=search.simple&company_id=&page=1&orderby=ob&page_size=50&deal_type=" + deal_type +
         "&dt_select=" + deal_type +"&county=" + county_id + "&parish=" + parish_id + "&" + part_of_city_string +

@@ -63,7 +63,6 @@ generateLink = function(o, data) {
             "Ihaste": 13256,
             "Jaamamõisa": 13265,
             "Karlova": 13257,
-            "Kesklinn": 13254,
             "Maarjamõisa": 66078,
             "Raadi-Kruusamäe": 13259,
             "Ropka": 13258,

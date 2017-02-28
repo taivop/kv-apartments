@@ -51,7 +51,6 @@ generateLink = function(o, data) {
     } else {
         part_of_city_map = {
             "Haabersti": 13237,
-            "Kesklinn": 13238,
             "Kristiine": 13239,
             "Lasnamäe": 13240,
             "Mustamäe": 13241,

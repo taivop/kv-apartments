@@ -576,7 +576,7 @@ JSZipUtils.getBinaryContent('data/apartment_both_tartu.csv.zip', function(err, d
     rowParser = function(d) {
         return {
             ID: d.ID,
-            Hind: parseFloat(d.HindKohandatud) * 88.3/79.4, // 27 Feb 2017 / Aug 1 2015
+            Hind: parseFloat(d.HindKohandatud) * 92.3/79.4, // 10 Dec 2017 / Aug 1 2015
             Linnaosa: d.Linnaosa,
             Üldpind: d.Üldpind,
             Seisukord: d.Seisukord,
